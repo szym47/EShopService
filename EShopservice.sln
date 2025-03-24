@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EShop.Application.Tests", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EShop.Domain", "EShop.Domain\EShop.Domain.csproj", "{0BB3AD25-099E-4033-9A90-39AB7E98BBC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EShop.Domain.Tests", "EShop.Domain.Tests\EShop.Domain.Tests.csproj", "{E735E8DE-A6F2-47E7-9170-FE315DE6A872}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,12 +33,21 @@ Global
 		{CA9D6CAC-5442-47F7-90B4-07DB1016A8DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA9D6CAC-5442-47F7-90B4-07DB1016A8DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA9D6CAC-5442-47F7-90B4-07DB1016A8DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BB3AD25-099E-4033-9A90-39AB7E98BBC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BB3AD25-099E-4033-9A90-39AB7E98BBC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BB3AD25-099E-4033-9A90-39AB7E98BBC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BB3AD25-099E-4033-9A90-39AB7E98BBC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E735E8DE-A6F2-47E7-9170-FE315DE6A872}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E735E8DE-A6F2-47E7-9170-FE315DE6A872}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E735E8DE-A6F2-47E7-9170-FE315DE6A872}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E735E8DE-A6F2-47E7-9170-FE315DE6A872}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CA9D6CAC-5442-47F7-90B4-07DB1016A8DE} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{E735E8DE-A6F2-47E7-9170-FE315DE6A872} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BE2B7233-D06B-4044-960F-3AE2975E5230}
