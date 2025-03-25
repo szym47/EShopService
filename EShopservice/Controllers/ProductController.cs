@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using EShop.Application.Service;
+using EShopDomain.Models;
+using System.Threading.Tasks;
 
 namespace EShopService.Controllers
 {
@@ -8,36 +9,64 @@ namespace EShopService.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        // GET: api/<ProductController>
+        private readonly IProductService _productService; // Używaj interfejsu
+
+        public ProductController(IProductService productService)
+        {
+            _productService = productService;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> GetAll()
         {
-            return new string[] { "value1", "value2" };
+            var products = await _productService.GetAllProductsAsync();
+            return Ok(products);
         }
 
-        // GET api/<ProductController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            return "value";
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null)
+                return NotFound();
+
+            return Ok(product);
         }
 
-        // POST api/<ProductController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Create([FromBody] Product product)
         {
+            if (product == null)
+                return BadRequest("Product data is required.");
+
+            var createdProduct = await _productService.AddProductAsync(product); // Użyj spójnej nazwy metody
+            return CreatedAtAction(nameof(GetById), new { id = createdProduct.Id }, createdProduct);
         }
 
-        // PUT api/<ProductController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Update(int id, [FromBody] Product product)
         {
+            if (product == null)
+                return BadRequest("Product data is required.");
+
+            var existingProduct = await _productService.GetProductByIdAsync(id);
+            if (existingProduct == null)
+                return NotFound();
+
+            product.Id = id;
+            await _productService.UpdateProductAsync(product); // Upewnij się, że metoda istnieje w serwisie
+            return NoContent();
         }
 
-        // DELETE api/<ProductController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null)
+                return NotFound();
+
+            await _productService.DeleteProductAsync(id);
+            return NoContent();
         }
     }
 }
