@@ -1,46 +1,44 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using EShopDomain.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using EShopDomain.Models;
 
 namespace EShopDomain.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : BaseModel
+    public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly List<T> _data = new List<T>();
+        private readonly DataContext _context;
+
+        public Repository(DataContext context)
+        {
+            _context = context;
+        }
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await Task.FromResult(_data);
+            return await Task.FromResult(_context.Set<T>().ToList());
         }
 
         public async Task<T?> GetByIdAsync(int id)
         {
-            return await Task.FromResult(_data.FirstOrDefault(e => (e as Product)?.Id == id));
+            return await _context.Set<T>().FindAsync(id);
         }
 
-        public async Task<T> AddAsync(T entity)
+        public async Task AddAsync(T entity)
         {
-            _data.Add(entity);
-            return await Task.FromResult(entity);
+            await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity)
         {
-            var index = _data.FindIndex(e => (e as Product)?.Id == (entity as Product)?.Id);
-            if (index == -1) return false;
-
-            _data[index] = entity;
-            return await Task.FromResult(true);
+            _context.Set<T>().Update(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task DeleteAsync(T entity)
         {
-            var entity = _data.FirstOrDefault(e => (e as Product)?.Id == id);
-            if (entity == null) return false;
-
-            _data.Remove(entity);
-            return await Task.FromResult(true);
+            _context.Set<T>().Remove(entity);
+            await _context.SaveChangesAsync();
         }
     }
 }

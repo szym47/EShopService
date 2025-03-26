@@ -1,6 +1,4 @@
 ﻿using EShopDomain.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace EShop.Application.Service
 {
@@ -8,9 +6,8 @@ namespace EShop.Application.Service
     {
         Task<IEnumerable<Product>> GetAllProductsAsync();
         Task<Product?> GetProductByIdAsync(int id);
-        Task<Product> AddProductAsync(Product product);
-        Task UpdateProductAsync(Product product); // Dodaj tę metodę
+        Task<Product> AddProductAsync(Product product);  // Dodaj tę linię
+        Task UpdateProductAsync(Product product);
         Task DeleteProductAsync(int id);
     }
-
 }

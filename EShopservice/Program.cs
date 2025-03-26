@@ -1,25 +1,27 @@
-using EShop.Application.Service;
+﻿using EShop.Application.Service;
 using EShop.Application.Services;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using EShopDomain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Rejestracja serwis�w
+// 🔹 Dodaj rejestrację DataContext
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseInMemoryDatabase("EShopDb")); // Możesz zmienić na SQL Server np.: UseSqlServer(connectionString)
+
+// 🔹 Dodaj repozytorium generyczne
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+// 🔹 Dodaj serwis ProductService i CreditCardService
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICreditCardService, CreditCardService>();
-builder.Services.AddScoped<IProductService, ProductService>(); // Dodaj ProductService
 
-// Dodanie kontroler�w
 builder.Services.AddControllers();
-
-// Swagger (dokumentacja API)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// �rodowisko deweloperskie
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

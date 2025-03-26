@@ -1,8 +1,6 @@
 ﻿using EShop.Application.Service;
 using EShopDomain.Models;
 using EShopDomain.Repositories;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace EShop.Application.Services
 {
@@ -25,7 +23,7 @@ namespace EShop.Application.Services
             return await _productRepository.GetByIdAsync(id);
         }
 
-        public async Task<Product> AddProductAsync(Product product)
+        public async Task<Product> AddProductAsync(Product product) // ✅ Nowa metoda
         {
             await _productRepository.AddAsync(product);
             return product;
@@ -33,19 +31,7 @@ namespace EShop.Application.Services
 
         public async Task UpdateProductAsync(Product product)
         {
-            var existingProduct = await _productRepository.GetByIdAsync(product.Id);
-            if (existingProduct == null)
-            {
-                throw new KeyNotFoundException("Product not found.");
-            }
-
-            existingProduct.Name = product.Name;
-            existingProduct.Price = product.Price;
-            existingProduct.Stock = product.Stock;
-            existingProduct.Sku = product.Sku;
-            existingProduct.Category = product.Category;
-
-            await _productRepository.UpdateAsync(existingProduct);
+            await _productRepository.UpdateAsync(product);
         }
 
         public async Task DeleteProductAsync(int id)
@@ -55,9 +41,7 @@ namespace EShop.Application.Services
             {
                 throw new KeyNotFoundException("Product not found.");
             }
-
-            await _productRepository.DeleteAsync(product.Id);
+            await _productRepository.DeleteAsync(product);
         }
     }
-
 }
