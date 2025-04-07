@@ -1,6 +1,7 @@
 ﻿using EShop.Application.Service;
 using EShop.Application.Services;
 using EShopDomain.Repositories;
+using EShop.Domain.Seeders;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 // 🔹 Dodaj serwis ProductService i CreditCardService
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICreditCardService, CreditCardService>();
+builder.Services.AddScoped<IEShopSeeder, EShopSeeder>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

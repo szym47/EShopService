@@ -6,14 +6,14 @@ namespace EShop.Application.Services
 {
     public class ProductService : IProductService
     {
-        private readonly IRepository<Product> _productRepository;
+        private IRepository _productRepository;
 
         public ProductService(IRepository<Product> productRepository)
         {
             _productRepository = productRepository;
         }
 
-        public async Task<IEnumerable<Product>> GetAllProductsAsync()
+        public async Task<List<Product>> GetAllProductsAsync()
         {
             return await _productRepository.GetAllAsync();
         }
@@ -23,7 +23,7 @@ namespace EShop.Application.Services
             return await _productRepository.GetByIdAsync(id);
         }
 
-        public async Task<Product> AddProductAsync(Product product) // ✅ Nowa metoda
+        public async Task<Product> AddProductAsync(Product product) 
         {
             await _productRepository.AddAsync(product);
             return product;
