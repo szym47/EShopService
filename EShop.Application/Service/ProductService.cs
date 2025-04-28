@@ -1,47 +1,49 @@
-﻿using EShop.Application.Service;
+﻿using EShop.Domain.Repositories;
 using EShopDomain.Models;
-using EShopDomain.Repositories;
 
-namespace EShop.Application.Services
+namespace EShop.Application.Service
 {
     public class ProductService : IProductService
     {
-        private IRepository _productRepository;
-
-        public ProductService(IRepository<Product> productRepository)
+        private IRepository _repository;
+        public ProductService(IRepository repository)
         {
-            _productRepository = productRepository;
+            _repository = repository;
         }
 
-        public async Task<List<Product>> GetAllProductsAsync()
+        public async Task<List<Product>> GetAllAsync()
         {
-            return await _productRepository.GetAllAsync();
+            var result = await _repository.GetAllProductAsync();
+
+            return result;
         }
 
-        public async Task<Product?> GetProductByIdAsync(int id)
+        public async Task<Product> GetAsync(int id)
         {
-            return await _productRepository.GetByIdAsync(id);
+            var result = await _repository.GetProductAsync(id);
+
+            return result;
         }
 
-        public async Task<Product> AddProductAsync(Product product) 
+        public async Task<Product> UpdateAsync(Product product)
         {
-            await _productRepository.AddAsync(product);
-            return product;
+            var result = await _repository.UpdateProductAsync(product);
+
+            return result;
         }
 
-        public async Task UpdateProductAsync(Product product)
+        public async Task<Product> AddAsync(Product product)
         {
-            await _productRepository.UpdateAsync(product);
+             var result =  await _repository.AddProductAsync(product);
+
+            return result;
         }
 
-        public async Task DeleteProductAsync(int id)
+        public Product Add(Product product)
         {
-            var product = await _productRepository.GetByIdAsync(id);
-            if (product == null)
-            {
-                throw new KeyNotFoundException("Product not found.");
-            }
-            await _productRepository.DeleteAsync(product);
+            var result = _repository.AddProductAsync(product).Result;
+
+            return result;
         }
     }
 }

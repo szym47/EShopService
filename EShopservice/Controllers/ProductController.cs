@@ -1,71 +1,78 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using EShop.Application.Service;
+﻿using EShop.Application.Service;
 using EShopDomain.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace EShopService.Controllers;
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-[Route("api/[controller]")]
-[ApiController]
-public class ProductController : ControllerBase
+namespace EShopService.Controllers
 {
-    private readonly IProductService _productService; 
-
-    public ProductController(IProductService productService)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProductController : ControllerBase
     {
-        _productService = productService;
-    }
+        private IProductService _productService;
+        public ProductController(IProductService productService)
+        {
+            _productService = productService;
+        }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
-        var products = await _productService.GetAllProductsAsync();
-        return Ok(products);
-    }
+        // GET: api/<ProductController>
+        [HttpGet]
+        public async Task<ActionResult> Get()
+        {
+            var result = await _productService.GetAllAsync();
+            return Ok(result);
+        }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
-    {
-        var product = await _productService.GetProductByIdAsync(id);
-        if (product == null)
-            return NotFound();
+        // GET api/<ProductController>/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult> Get(int id)
+        {
+            var result = await _productService.GetAsync(id);
+            if (result == null)
+            {
+                return NotFound();
+            }
 
-        return Ok(product);
-    }
+            return Ok(result);
+        }
 
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] Product product)
-    {
-        if (product == null)
-            return BadRequest("Product data is required.");
+        // POST api/<ProductController>
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody]Product product)
+        {
+            var result = await _productService.AddAsync(product);
 
-        var createdProduct = await _productService.AddProductAsync(product);
-        return CreatedAtAction(nameof(GetById), new { id = createdProduct.Id }, createdProduct);
-    }
+            return Ok(result);
+        }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] Product product)
-    {
-        if (product == null)
-            return BadRequest("Product data is required.");
+        // PUT api/<ProductController>/5
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(int id, [FromBody]Product product)
+        {
+            var result = await _productService.UpdateAsync(product);
 
-        var existingProduct = await _productService.GetProductByIdAsync(id);
-        if (existingProduct == null)
-            return NotFound();
+            return Ok(result);
+        }
 
-        product.Id = id;
-        await _productService.UpdateProductAsync(product);
-        return NoContent();
-    }
+        // DELETE api/<ProductController>/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var product = await _productService.GetAsync(id);
+            product.Deleted = true;
+            var result = await _productService.UpdateAsync(product);
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var product = await _productService.GetProductByIdAsync(id);
-        if (product == null)
-            return NotFound();
+            return Ok(result);
+        }
 
-        await _productService.DeleteProductAsync(id);
-        return NoContent();
+        [HttpPatch]
+        public ActionResult Add([FromBody] Product product)
+        {
+            var result = _productService.Add(product);
+
+            return Ok(result);
+        }
     }
 }

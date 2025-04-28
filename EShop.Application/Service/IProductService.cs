@@ -4,10 +4,10 @@ namespace EShop.Application.Service
 {
     public interface IProductService
     {
-        public Task<List<Product>> GetAllProductsAsync();
-        Task<Product> GetProductByIdAsync(int id);
-        Task<Product> AddProductAsync(Product product); 
-        Task UpdateProductAsync(Product product);
-        Task DeleteProductAsync(int id);
+        public Task<List<Product>> GetAllAsync();
+        Task<Product> GetAsync(int id);
+        Task<Product> UpdateAsync(Product product);
+        Task<Product> AddAsync(Product product);
+        Product Add(Product product);
     }
 }

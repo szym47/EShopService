@@ -1,23 +1,38 @@
-﻿using EShopDomain.Models;
-using EShopDomain.Repositories;
+﻿using EShop.Domain.Repositories;
+using EShopDomain.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace EShop.Domain.Seeders;
-
-public class EShopSeeder(DataContext context) : IEShopSeeder
+namespace EShop.Domain.Seeders
 {
-    public async Task Seed()
+    public class EShopSeeder(DataContext context) : IEShopSeeder
     {
-        if (!context.Products.Any())
+        public async Task Seed()
         {
-            var students = new List<Product>
+            if (!context.Categories.Any())
             {
-                new Product { Name = "Cobi", Ean = "1234" },
-                new Product { Name = "Duplo", Ean = "431" },
-                new Product { Name = "Lego", Ean = "12212" }
-            };
+                var categories = new List<Category>
+                {
+                    new Category { Name = "Klocki" },
+                };
 
-            context.Products.AddRange(students);
-            context.SaveChanges();
+                context.Categories.AddRange(categories);
+                context.SaveChanges();
+            }
+            if (!context.Products.Any())
+            {
+                var category = await context.Categories
+                        .Where(x => x.Name == "Klocki").FirstOrDefaultAsync();
+
+                var products = new List<Product>
+                {
+                    new Product { Name = "Cobi", Ean = "1234", Category = category },
+                    new Product { Name = "Duplo", Ean = "431", Category = category },
+                    new Product { Name = "Lego", Ean = "12212", Category = category }
+                };
+
+                context.Products.AddRange(products);
+                context.SaveChanges();
+            }
         }
     }
 }

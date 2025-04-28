@@ -1,44 +1,39 @@
 ﻿using EShopDomain.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
-namespace EShopDomain.Repositories
+namespace EShop.Domain.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository : IRepository
     {
         private readonly DataContext _context;
 
-        public Repository(DataContext context)
+        public Repository(DataContext dataContext)
         {
-            _context = context;
+            _context = dataContext;
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<Product> AddProductAsync(Product product)
         {
-            return await Task.FromResult(_context.Set<T>().ToList());
-        }
-
-        public async Task<T?> GetByIdAsync(int id)
-        {
-            return await _context.Set<T>().FindAsync(id);
-        }
-
-        public async Task AddAsync(T entity)
-        {
-            await _context.Set<T>().AddAsync(entity);
+            _context.Products.Add(product);
             await _context.SaveChangesAsync();
+            return product;
         }
 
-        public async Task UpdateAsync(T entity)
+        public async Task<List<Product>> GetAllProductAsync()
         {
-            _context.Set<T>().Update(entity);
-            await _context.SaveChangesAsync();
+            return await _context.Products.ToListAsync();
         }
 
-        public async Task DeleteAsync(T entity)
+        public async Task<Product> GetProductAsync(int id)
         {
-            _context.Set<T>().Remove(entity);
+            return await _context.Products.Where(x => x.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<Product> UpdateProductAsync(Product product)
+        {
+            _context.Products.Update(product);
             await _context.SaveChangesAsync();
+            return product;
         }
     }
 }

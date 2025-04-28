@@ -1,11 +1,15 @@
-﻿namespace EShopDomain.Repositories
+﻿using EShopDomain.Models;
+
+namespace EShop.Domain.Repositories
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository
     {
-        Task<IEnumerable<T>> GetAllAsync();
-        Task<T?> GetByIdAsync(int id);
-        Task AddAsync(T entity);
-        Task UpdateAsync(T entity);
-        Task DeleteAsync(T entity);
+        #region Product
+        Task<Product> GetProductAsync(int id);
+        Task<Product> AddProductAsync(Product product);
+        Task<Product> UpdateProductAsync(Product user);
+        Task<List<Product>> GetAllProductAsync();
+        #endregion
+
     }
 }

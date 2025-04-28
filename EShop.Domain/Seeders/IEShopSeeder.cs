@@ -1,6 +1,7 @@
-﻿namespace EShop.Domain.Seeders;
-
-public interface IEShopSeeder
+﻿namespace EShop.Domain.Seeders
 {
-    Task Seed();
+    public interface IEShopSeeder
+    {
+        Task Seed();
+    }
 }

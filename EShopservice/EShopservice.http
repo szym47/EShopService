@@ -1,6 +1,6 @@
-@EShopservice_HostAddress = http://localhost:5165
+@EShopService_HostAddress = http://localhost:5052
 
-GET {{EShopservice_HostAddress}}/weatherforecast/
+GET {{EShopService_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
